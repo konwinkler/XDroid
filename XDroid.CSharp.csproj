@@ -63,9 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\scripts\Controllers\ActorController.cs" />
     <Compile Include="Assets\scripts\Controllers\TileController.cs" />
     <Compile Include="Assets\scripts\Controllers\WallController.cs" />
     <Compile Include="Assets\scripts\Controllers\WorldController.cs" />
+    <Compile Include="Assets\scripts\Model\Actor.cs" />
     <Compile Include="Assets\scripts\Model\Tile.cs" />
     <Compile Include="Assets\scripts\Model\Wall.cs" />
     <Compile Include="Assets\scripts\Model\World.cs" />

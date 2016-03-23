@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 
 public class World {
-    public int Height { get; protected set; }
-    public int Width { get; protected set; }
+    public int Height { get; private set; }
+    public int Width { get; private set; }
     private Tile[,] tiles;
-    public LinkedList<Wall> walls { get; protected set; }
+    public List<Actor> actors { get; private set; }
+    public LinkedList<Wall> walls { get; private set; }
 
     public World(int width = 5, int height = 10)
     {
@@ -14,7 +15,14 @@ public class World {
 
         createTiles();
         createWalls();
+        createActors();
 
+    }
+
+    private void createActors()
+    {
+        actors = new List<Actor>();
+        actors.Add(new Actor("Player1", 2, 5));
     }
 
     private void createWalls()
