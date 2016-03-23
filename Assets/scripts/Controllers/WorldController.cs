@@ -22,7 +22,7 @@ public class WorldController : MonoBehaviour
         }
         Instance = this;
 
-        this.World = new World(50,50);
+        this.World = new World();
     }
 
     // Use this for initialization

@@ -26,9 +26,11 @@ public class TileController : MonoBehaviour {
 
                 tileGameObject.name = "Tile_" + x + "_" + y;
                 tileGameObject.transform.position = new Vector3(x, y, 0);
+                tileGameObject.transform.SetParent(this.transform, true);
 
                 SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
                 sr.sprite = FloorSprite;
+                sr.sortingLayerName = "Tiles";
             }
         }
     }
