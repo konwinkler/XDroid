@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 public class World {
-    public int Height { get; private set; }
-    public int Width { get; private set; }
-    private Tile[,] tiles;
-    public List<Actor> actors { get; private set; }
-    public LinkedList<Wall> walls { get; private set; }
+    public int Height { get; internal set; }
+    public int Width { get; internal set; }
+    public Tile[,] tiles { get; internal set; }
+    public List<Actor> actors { get; internal set; }
+    public LinkedList<Wall> walls { get; internal set; }
 
     public World(int width = 5, int height = 10)
     {
@@ -22,7 +22,7 @@ public class World {
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", 2, 5));
+        actors.Add(new Actor("Player1", getTileAt(2, 5)));
     }
 
     private void createWalls()
@@ -35,15 +35,23 @@ public class World {
         walls.AddFirst(new Wall(1, 4, Wall.Direction.Left, Wall.WallType.Half));
     }
 
+    internal void update(float deltaTime)
+    {
+        foreach(Actor actor in actors)
+        {
+            actor.update(deltaTime);
+        } 
+    }
+
     private void createTiles()
     {
         tiles = new Tile[Width, Height];
 
         for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < Width; y++)
+            for (int y = 0; y < Height; y++)
             {
-                tiles[x, y] = new Tile();
+                tiles[x, y] = new Tile(x, y);
             }
         }
     }

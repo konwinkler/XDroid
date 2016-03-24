@@ -17,21 +17,25 @@ public class TileController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        for (int x = 0; x < world.Width; x++)
+        foreach(Tile tile in world.tiles)
         {
-            for (int y = 0; y < world.Height; y++)
+            GameObject tileGameObject = new GameObject();
+
+
+            tileGameObject.name = "Tile_" + tile.x + "_" + tile.y;
+            tileGameObject.transform.position = new Vector3(tile.x, tile.y, 0);
+            tileGameObject.transform.SetParent(this.transform, true);
+
+            SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
+            switch(tile.type)
             {
-                GameObject tileGameObject = new GameObject();
-
-
-                tileGameObject.name = "Tile_" + x + "_" + y;
-                tileGameObject.transform.position = new Vector3(x, y, 0);
-                tileGameObject.transform.SetParent(this.transform, true);
-
-                SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
-                sr.sprite = FloorSprite;
-                sr.sortingLayerName = "Tiles";
+                case Tile.TileType.Floor:
+                    sr.sprite = FloorSprite;
+                    break;
+                default:
+                    throw new Exception("Tile type not recognized by tile controller.");
             }
+            sr.sortingLayerName = "Tiles";
         }
     }
 	

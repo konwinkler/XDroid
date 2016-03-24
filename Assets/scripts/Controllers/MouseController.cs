@@ -37,7 +37,9 @@ public class MouseController : MonoBehaviour {
             int x = Mathf.FloorToInt(currFramePosition.x + 0.5f);
             int y = Mathf.FloorToInt(currFramePosition.y + 0.5f);
 
-            world.getCurrentActor().move(x, y);
+            Tile tile = world.getTileAt(x, y);
+
+            world.getCurrentActor().move(tile);
         }
     }
 
