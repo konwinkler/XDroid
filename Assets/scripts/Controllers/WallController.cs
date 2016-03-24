@@ -44,11 +44,6 @@ public class WallController : MonoBehaviour {
 
             SpriteRenderer sr = wallGameObject.AddComponent<SpriteRenderer>();
 
-
-            Debug.Log(wall.Type);
-            Debug.Log(fullSprite);
-            Debug.Log(halfSprite);
-
             switch (wall.Type)
             {
                 case Wall.WallType.Full:

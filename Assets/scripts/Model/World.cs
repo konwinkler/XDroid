@@ -52,4 +52,9 @@ public class World {
     {
         return tiles[x, y];
     }
+
+    public Actor getCurrentActor()
+    {
+        return actors[0];
+    }
 }
