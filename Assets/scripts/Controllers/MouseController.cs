@@ -39,7 +39,10 @@ public class MouseController : MonoBehaviour {
 
             Tile tile = world.getTileAt(x, y);
 
-            world.getCurrentActor().move(tile);
+            if (tile != null)
+            {
+                world.getCurrentActor().move(tile);
+            }
         }
     }
 

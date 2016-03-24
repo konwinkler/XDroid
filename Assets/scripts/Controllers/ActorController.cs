@@ -37,7 +37,7 @@ public class ActorController : MonoBehaviour {
         Debug.Log("move actor: " + actor.name);
         var actorGameObject = gameObjectCache[actor];
 
-        actorGameObject.transform.position = new Vector3(actor.currentTile.x, actor.currentTile.y, 0);
+        actorGameObject.transform.position = new Vector3(actor.x, actor.y, 0);
     }
 
 

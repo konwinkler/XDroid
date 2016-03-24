@@ -58,6 +58,16 @@ public class World {
 
     public Tile getTileAt(int x, int y)
     {
+        if(x < 0 || y < 0)
+        {
+            return null;
+        }
+
+        if(x >= Width || y >= Height)
+        {
+            return null;
+        }
+
         return tiles[x, y];
     }
 
