@@ -33,14 +33,15 @@ public class Pathfinder
 
             if(current == null)
             {
+                throw new Exception("Something went wrong in pathfinding.");
                 Debug.Log("Could not find path.");
                 return path;
             }
 
             if(current == end)
             {
-                Debug.Log("finished pathfinding.");
                 reconstruct(history, end, path, start);
+                Debug.Log("finished pathfinding, path is "+path.Count+" tiles long.");
                 return path;
             }
 
@@ -56,6 +57,7 @@ public class Pathfinder
                 }
             }
         }
+        Debug.Log("Could not find valid path.");
         return path;
     }
 

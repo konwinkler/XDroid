@@ -23,7 +23,7 @@ public class World {
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", getTileAt(2, 5), this));
+        actors.Add(new Actor("Player1", getTileAt(2, 0), this));
     }
 
     public List<Tile> getNeighbours(Tile root)
@@ -65,11 +65,37 @@ public class World {
     private void createWalls()
     {
         walls = new LinkedList<Wall>();
-        walls.AddFirst(new Wall(0, 0, Wall.Direction.Up, Wall.WallType.Full));
-        walls.AddFirst(new Wall(1, 1, Wall.Direction.Down, Wall.WallType.Full));
-        walls.AddFirst(new Wall(1, 4, Wall.Direction.Down, Wall.WallType.Half));
-        walls.AddFirst(new Wall(1, 4, Wall.Direction.Right, Wall.WallType.Half));
-        walls.AddFirst(new Wall(1, 4, Wall.Direction.Left, Wall.WallType.Half));
+        //lower half
+        walls.AddFirst(new Wall(1, 1, Wall.Direction.Up, Wall.WallType.Half));
+        walls.AddFirst(new Wall(0, 2, Wall.Direction.Right, Wall.WallType.Full));
+        walls.AddFirst(new Wall(0, 3, Wall.Direction.Right, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(4, 1, Wall.Direction.Up, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(2, 3, Wall.Direction.Up, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 3, Wall.Direction.Down, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 3, Wall.Direction.Left, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 3, Wall.Direction.Right, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(3, 3, Wall.Direction.Right, Wall.WallType.Full));
+        walls.AddFirst(new Wall(3, 4, Wall.Direction.Right, Wall.WallType.Half));
+        walls.AddFirst(new Wall(3, 4, Wall.Direction.Up, Wall.WallType.Full));
+
+        //upper half
+        walls.AddFirst(new Wall(3, 8, Wall.Direction.Down, Wall.WallType.Half));
+        walls.AddFirst(new Wall(4, 7, Wall.Direction.Left, Wall.WallType.Full));
+        walls.AddFirst(new Wall(4, 6, Wall.Direction.Left, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(0, 8, Wall.Direction.Down, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(2, 6, Wall.Direction.Down, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 6, Wall.Direction.Up, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 6, Wall.Direction.Right, Wall.WallType.Half));
+        walls.AddFirst(new Wall(2, 6, Wall.Direction.Left, Wall.WallType.Half));
+
+        walls.AddFirst(new Wall(1, 6, Wall.Direction.Left, Wall.WallType.Full));
+        walls.AddFirst(new Wall(1, 5, Wall.Direction.Left, Wall.WallType.Half));
+        walls.AddFirst(new Wall(1, 5, Wall.Direction.Down, Wall.WallType.Full));
     }
 
     internal void update(float deltaTime)
