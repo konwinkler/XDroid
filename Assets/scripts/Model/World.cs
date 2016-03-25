@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class World {
     public int Height { get; internal set; }
@@ -22,7 +23,43 @@ public class World {
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", getTileAt(2, 5)));
+        actors.Add(new Actor("Player1", getTileAt(2, 5), this));
+    }
+
+    public List<Tile> getNeighbours(Tile root)
+    {
+        var neighbours = new List<Tile>();
+
+        if (root.x > 0 && !blocked(root, Wall.Direction.Left))
+        {
+            neighbours.Add(getTileAt(root.x - 1, root.y));
+        }
+        if (root.x < (Width - 1) && !blocked(root, Wall.Direction.Right))
+        {
+            neighbours.Add(getTileAt(root.x + 1, root.y));
+        }
+        if (root.y > 0 && !blocked(root, Wall.Direction.Down))
+        {
+            neighbours.Add(getTileAt(root.x, root.y - 1));
+        }
+        if (root.y < (Height - 1) && !blocked(root, Wall.Direction.Up))
+        {
+            neighbours.Add(getTileAt(root.x, root.y + 1));
+        }
+
+        return neighbours;
+    }
+
+    private bool blocked(Tile root, Wall.Direction direction)
+    {
+        foreach(var wall in walls)
+        {
+            if(wall.blocks(root, direction))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void createWalls()

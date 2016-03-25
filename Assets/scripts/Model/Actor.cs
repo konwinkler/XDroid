@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
-public class Actor {
+public class Actor
+{
     public Tile currentTile { get; internal set; }
     public string name { get; internal set; }
-    public float x {
+    public float x
+    {
         get
         {
             return Mathf.Lerp(currentTile.x, nextTile.x, movementPercentage);
@@ -23,21 +26,28 @@ public class Actor {
     private float speed = 5f;
     private float movementPercentage = 0;
     private Tile nextTile;
+    private World world;
+    private Stack<Tile> path;
 
-    public Actor(String name, Tile tile)
+    public Actor(String name, Tile tile, World world)
     {
         this.name = name;
         this.currentTile = tile;
         this.nextTile = tile;
+        this.world = world;
     }
 
     public void move(Tile tile)
     {
         //get path
+        Pathfinder finder = new Pathfinder(world);
+        var path = finder.calculatePath(currentTile, tile);
+        this.path = path;
 
-        //for loop through path? would block other behavior?
-
-        nextTile = tile;
+        if (path != null && path.Count > 0)
+        {
+            nextTile = path.Pop();
+        }
     }
 
     public void registerCallback(Action<Actor> callback)
@@ -47,7 +57,7 @@ public class Actor {
 
     internal void update(float deltaTime)
     {
-        if(currentTile == nextTile)
+        if (currentTile == nextTile)
         {
             return;
         }
@@ -64,10 +74,20 @@ public class Actor {
 
         movementPercentage += percentageThisFrame;
 
-        if(movementPercentage >= 1)
+        if (movementPercentage >= 1)
         {
             movementPercentage = 0f;
-            currentTile = nextTile;
+            if (path != null && path.Count > 0)
+            {
+                currentTile = nextTile;
+                nextTile = path.Pop();
+               // Debug.Log("next tile is " + nextTile);
+               // Debug.Log("stack size is " + path.Count);
+            }
+            else
+            {
+                currentTile = nextTile;
+            }
         }
 
         callbackMoved(this);
