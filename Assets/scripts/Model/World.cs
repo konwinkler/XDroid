@@ -23,7 +23,7 @@ public class World {
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", getTileAt(2, 0), this));
+        actors.Add(new Actor("Player1", getTileAt(2, 0), this, 3));
     }
 
     public List<Tile> getNeighbours(Tile root)

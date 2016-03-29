@@ -6,7 +6,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public class TileController : MonoBehaviour {
+public class TileController : MonoBehaviour
+{
 
     public Sprite FloorSprite;
 
@@ -16,18 +17,18 @@ public class TileController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        foreach(Tile tile in world.tiles)
+    void Start()
+    {
+        foreach (Tile tile in world.tiles)
         {
             GameObject tileGameObject = new GameObject();
-
 
             tileGameObject.name = "Tile_" + tile.x + "_" + tile.y;
             tileGameObject.transform.position = new Vector3(tile.x, tile.y, 0);
             tileGameObject.transform.SetParent(this.transform, true);
 
             SpriteRenderer sr = tileGameObject.AddComponent<SpriteRenderer>();
-            switch(tile.type)
+            switch (tile.type)
             {
                 case Tile.TileType.Floor:
                     sr.sprite = FloorSprite;
@@ -38,9 +39,10 @@ public class TileController : MonoBehaviour {
             sr.sortingLayerName = "Tiles";
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

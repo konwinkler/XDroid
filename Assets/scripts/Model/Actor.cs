@@ -22,27 +22,31 @@ public class Actor
         }
     }
 
-    Action<Actor> callbackMoved;
+    public int movementRange { get; internal set; }
+
+    Action<Actor> moving;
+    Action<Actor> finishedMoving;
+
     private float speed = 5f;
     private float movementPercentage = 0;
     private Tile nextTile;
     private World world;
     private Stack<Tile> path;
 
-    public Actor(String name, Tile tile, World world)
+    public Actor(String name, Tile tile, World world, int movementRange)
     {
         this.name = name;
         this.currentTile = tile;
         this.nextTile = tile;
         this.world = world;
+        this.movementRange = movementRange;
     }
 
     public void move(Tile tile)
     {
         //get path
         Pathfinder finder = new Pathfinder(world);
-        var path = finder.calculatePath(currentTile, tile);
-        this.path = path;
+        this.path = finder.calculatePath(currentTile, tile);
 
         if (path != null && path.Count > 0)
         {
@@ -50,9 +54,14 @@ public class Actor
         }
     }
 
-    public void registerCallback(Action<Actor> callback)
+    public void movingCallback(Action<Actor> callback)
     {
-        callbackMoved += callback;
+        moving += callback;
+    }
+
+    public void finishedMovingCallback(Action<Actor> callback)
+    {
+        finishedMoving += callback;
     }
 
     internal void update(float deltaTime)
@@ -81,15 +90,22 @@ public class Actor
             {
                 currentTile = nextTile;
                 nextTile = path.Pop();
-               // Debug.Log("next tile is " + nextTile);
-               // Debug.Log("stack size is " + path.Count);
+                // Debug.Log("next tile is " + nextTile);
+                // Debug.Log("stack size is " + path.Count);
             }
             else
             {
                 currentTile = nextTile;
+                if (finishedMoving != null)
+                {
+                    finishedMoving(this);
+                }
             }
         }
 
-        callbackMoved(this);
+        if (moving != null)
+        {
+            moving(this);
+        }
     }
 }

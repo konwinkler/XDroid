@@ -25,9 +25,9 @@ public class ActorController : MonoBehaviour {
 
             SpriteRenderer sr = actorGameObject.AddComponent<SpriteRenderer>();
             sr.sprite = ActorSprite;
-            sr.sortingLayerName = "Walls";
+            sr.sortingLayerName = "Actor";
 
-            actor.registerCallback(moveActor);
+            actor.movingCallback(moveActor);
             gameObjectCache.Add(actor, actorGameObject);
         }
 	}
