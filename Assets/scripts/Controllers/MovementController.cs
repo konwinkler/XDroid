@@ -15,14 +15,11 @@ public class MovementController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        foreach (Actor actor in world.actors)
-        {
-            actor.finishedMovingCallback(drawMovementRange);
-            drawMovementRange(actor);
-        }
+        world.movementRange.newMovementCallback(drawMovementRange);
+        drawMovementRange(world.movementRange);
     }
 
-    public void drawMovementRange(Actor actor)
+    public void drawMovementRange(MovementRange movementRange)
     {
         Debug.Log("Draw movement.");
 
@@ -33,9 +30,7 @@ public class MovementController : MonoBehaviour
         }
 
         //draw new ones
-        var finder = new Pathfinder(world);
-        List<Tile> reachableTiles = finder.calculaterange(actor.currentTile, actor.movementRange);
-        foreach (Tile tile in reachableTiles)
+        foreach (Tile tile in movementRange.validMovement)
         {
             GameObject movementGameObject = new GameObject();
 
@@ -49,6 +44,5 @@ public class MovementController : MonoBehaviour
 
             drawnMovement.Add(movementGameObject);
         }
-
     }
 }

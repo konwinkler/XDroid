@@ -41,7 +41,7 @@ public class MouseController : MonoBehaviour {
 
             if (tile != null)
             {
-                world.getCurrentActor().move(tile);
+                world.moveCurrentActor(tile);
             }
         }
     }

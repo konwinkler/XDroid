@@ -8,6 +8,9 @@ public class World {
     public Tile[,] tiles { get; internal set; }
     public List<Actor> actors { get; internal set; }
     public LinkedList<Wall> walls { get; internal set; }
+    public Actor currentActor { get; internal set; }
+    public MovementRange movementRange { get; internal set; }
+    public GameState gameState { get; internal set; }
 
     public World(int width = 5, int height = 10)
     {
@@ -17,13 +20,15 @@ public class World {
         createTiles();
         createWalls();
         createActors();
-
+        gameState = new GameState(this);
+        movementRange = new MovementRange(this);
     }
 
     private void createActors()
     {
         actors = new List<Actor>();
         actors.Add(new Actor("Player1", getTileAt(2, 0), this, 3));
+        currentActor = actors[0];
     }
 
     public List<Tile> getNeighbours(Tile root)
@@ -48,6 +53,11 @@ public class World {
         }
 
         return neighbours;
+    }
+
+    internal void moveCurrentActor(Tile tile)
+    {
+        currentActor.move(tile);
     }
 
     private bool blocked(Tile root, Wall.Direction direction)
@@ -132,10 +142,5 @@ public class World {
         }
 
         return tiles[x, y];
-    }
-
-    public Actor getCurrentActor()
-    {
-        return actors[0];
     }
 }
