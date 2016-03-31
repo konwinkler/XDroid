@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World {
+public class World
+{
     public int Height { get; internal set; }
     public int Width { get; internal set; }
     public Tile[,] tiles { get; internal set; }
@@ -27,7 +28,7 @@ public class World {
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", getTileAt(2, 0), this, 3));
+        actors.Add(new Actor("Player1", getTileAt(2, 0), this, 2));
         currentActor = actors[0];
     }
 
@@ -57,14 +58,17 @@ public class World {
 
     internal void moveCurrentActor(Tile tile)
     {
-        currentActor.move(tile);
+        if (movementRange.validMovement.Contains(tile))
+        {
+            currentActor.move(tile);
+        }
     }
 
     private bool blocked(Tile root, Wall.Direction direction)
     {
-        foreach(var wall in walls)
+        foreach (var wall in walls)
         {
-            if(wall.blocks(root, direction))
+            if (wall.blocks(root, direction))
             {
                 return true;
             }
@@ -110,10 +114,10 @@ public class World {
 
     internal void update(float deltaTime)
     {
-        foreach(Actor actor in actors)
+        foreach (Actor actor in actors)
         {
             actor.update(deltaTime);
-        } 
+        }
     }
 
     private void createTiles()
@@ -131,12 +135,12 @@ public class World {
 
     public Tile getTileAt(int x, int y)
     {
-        if(x < 0 || y < 0)
+        if (x < 0 || y < 0)
         {
             return null;
         }
 
-        if(x >= Width || y >= Height)
+        if (x >= Width || y >= Height)
         {
             return null;
         }
