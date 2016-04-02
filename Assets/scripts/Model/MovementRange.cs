@@ -16,7 +16,7 @@ public class MovementRange {
     public MovementRange(World world)
     {
         this.world = world;
-        newMovementRange(world.currentActor);
+        newMovementRange(world.gameState.currentActor);
         world.gameState.nextActorCallback(newMovementRange);
     }
 
@@ -32,7 +32,7 @@ public class MovementRange {
 
     public void newMovementCallback(Action<MovementRange> callback)
     {
-        newMovement = callback;
+        newMovement += callback;
     }
 
 }

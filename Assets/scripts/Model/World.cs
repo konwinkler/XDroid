@@ -9,7 +9,6 @@ public class World
     public Tile[,] tiles { get; internal set; }
     public List<Actor> actors { get; internal set; }
     public LinkedList<Wall> walls { get; internal set; }
-    public Actor currentActor { get; internal set; }
     public MovementRange movementRange { get; internal set; }
     public GameState gameState { get; internal set; }
 
@@ -21,7 +20,7 @@ public class World
         createTiles();
         createWalls();
         createActors();
-        gameState = new GameState(this);
+        gameState = new GameState(this, actors[0]);
         movementRange = new MovementRange(this);
     }
 
@@ -29,7 +28,7 @@ public class World
     {
         actors = new List<Actor>();
         actors.Add(new Actor("Player1", getTileAt(2, 0), this, 2));
-        currentActor = actors[0];
+        actors.Add(new Actor("Player2", getTileAt(2, 9), this, 2));
     }
 
     public List<Tile> getNeighbours(Tile root)
@@ -60,7 +59,7 @@ public class World
     {
         if (movementRange.validMovement.Contains(tile))
         {
-            currentActor.move(tile);
+            gameState.currentActor.move(tile);
         }
     }
 
