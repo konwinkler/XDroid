@@ -9,7 +9,6 @@ public class World
     public Tile[,] tiles { get; internal set; }
     public List<Actor> actors { get; internal set; }
     public LinkedList<Wall> walls { get; internal set; }
-    public MovementRange movementRange { get; internal set; }
     public GameState gameState { get; internal set; }
 
     public World(int width = 5, int height = 10)
@@ -21,7 +20,6 @@ public class World
         createWalls();
         createActors();
         gameState = new GameState(this, actors[0]);
-        movementRange = new MovementRange(this);
     }
 
     private void createActors()
@@ -53,14 +51,6 @@ public class World
         }
 
         return neighbours;
-    }
-
-    internal void moveCurrentActor(Tile tile)
-    {
-        if (movementRange.validMovement.Contains(tile))
-        {
-            gameState.currentActor.move(tile);
-        }
     }
 
     private bool blocked(Tile root, Wall.Direction direction)

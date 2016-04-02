@@ -9,15 +9,9 @@ public class MovementRange {
 
     public List<Tile> validMovement { get; internal set; }
 
-    /// <summary>
-    /// depends on world.gamestate
-    /// </summary>
-    /// <param name="world"></param>
     public MovementRange(World world)
     {
         this.world = world;
-        newMovementRange(world.gameState.currentActor);
-        world.gameState.nextActorCallback(newMovementRange);
     }
 
     public void newMovementRange(Actor actor)

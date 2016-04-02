@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour {
     // The world-position of the mouse last frame.
@@ -22,15 +23,20 @@ public class MouseController : MonoBehaviour {
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
 
-        movePlayer();
+        interfaceInput();
         updateCameraMovement();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
     }
 
-    private void movePlayer()
+    private void interfaceInput()
     {
+        // If we're over a UI element, then bail out from this.
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -41,7 +47,7 @@ public class MouseController : MonoBehaviour {
 
             if (tile != null)
             {
-                world.moveCurrentActor(tile);
+                world.gameState.click(tile);
             }
         }
     }
