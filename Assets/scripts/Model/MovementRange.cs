@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class MovementRange {
+public class MovementRange
+{
     private World world;
-    Action<MovementRange> newMovement;
+    internal Action<MovementRange> notifyNewMovement;
+    internal Action<MovementRange> notifyClearMovement;
 
-    public List<Tile> validMovement { get; internal set; }
+    public List<Tile> validMovementTiles { get; internal set; }
 
     public MovementRange(World world)
     {
@@ -17,16 +19,27 @@ public class MovementRange {
     public void newMovementRange(Actor actor)
     {
         var finder = new Pathfinder(world);
-        validMovement = finder.calculaterange(actor.currentTile, actor.movementRange);
-        if(newMovement != null)
+        validMovementTiles = finder.calculaterange(actor.currentTile, actor.movementRange);
+        if (notifyNewMovement != null)
         {
-            newMovement(this);
+            notifyNewMovement(this);
         }
     }
 
     public void newMovementCallback(Action<MovementRange> callback)
     {
-        newMovement += callback;
+        notifyNewMovement += callback;
+    }
+
+    public void clearMovementCallback(Action<MovementRange> callback)
+    {
+        notifyClearMovement += callback;
+    }
+
+    public void clear()
+    {
+        validMovementTiles.Clear();
+        notifyClearMovement(this);
     }
 
 }

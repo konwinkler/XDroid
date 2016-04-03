@@ -8,8 +8,8 @@ public class GameState
     Action<Actor> nextActor;
     public Actor currentActor { get; internal set; }
     public MovementMode movementMode { get; internal set; }
+    public ShootingMode shootingMode { get; internal set; }
     GameMode currentMode;
-    ShootingMode shootingMode;
 
 
     public GameState(World world, Actor firstActor)
@@ -21,6 +21,7 @@ public class GameState
             actor.finishedMovingCallback(findNextActor);
         }
         movementMode = new MovementMode(world);
+        shootingMode = new ShootingMode(world);
         currentMode = movementMode;
 
         //setup movement
@@ -46,18 +47,37 @@ public class GameState
         }
         currentActor = world.actors[index];
 
-        Debug.Log("current actor is " + currentActor.name);
+        Debug.Log("new current actor is " + currentActor.name);
 
         //callbacks
         if (nextActor != null)
         {
-            Debug.Log("call next actor callback.");
             nextActor(currentActor);
         }
+    }
+
+    public void updateMousePosition(Tile tile)
+    {
+        currentMode.updateMousePosition(tile);
     }
 
     public void nextActorCallback(Action<Actor> callback)
     {
         nextActor += callback;
+    }
+
+    public void setModeToShooting()
+    {
+        currentMode.end();
+        currentMode = shootingMode;
+        currentMode.start();
+
+    }
+
+    public void setModeToMovement()
+    {
+        currentMode.end();
+        currentMode = movementMode;
+        currentMode.start();
     }
 }

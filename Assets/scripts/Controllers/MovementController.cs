@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class MovementController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class MovementController : MonoBehaviour
     {
         // FIXME: this needs to be called from the game mode
         world.gameState.movementMode.movementRange.newMovementCallback(drawMovementRange);
+        world.gameState.movementMode.movementRange.clearMovementCallback(destroyAll);
         drawMovementRange(world.gameState.movementMode.movementRange);
     }
 
@@ -25,13 +27,10 @@ public class MovementController : MonoBehaviour
         Debug.Log("Draw movement.");
 
         //delete old ones
-        foreach (GameObject gameObject in drawnMovement)
-        {
-            Destroy(gameObject);
-        }
+        destroyAll(movementRange);
 
         //draw new ones
-        foreach (Tile tile in movementRange.validMovement)
+        foreach (Tile tile in movementRange.validMovementTiles)
         {
             GameObject movementGameObject = new GameObject();
 
@@ -44,6 +43,14 @@ public class MovementController : MonoBehaviour
             sr.sortingLayerName = "Movement";
 
             drawnMovement.Add(movementGameObject);
+        }
+    }
+
+    private void destroyAll(MovementRange movementRange)
+    {
+        foreach (GameObject gameObject in drawnMovement)
+        {
+            Destroy(gameObject);
         }
     }
 }

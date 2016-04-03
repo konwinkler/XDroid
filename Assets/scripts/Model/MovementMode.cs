@@ -16,9 +16,24 @@ public class MovementMode : GameMode
 
     public void click(Tile tile)
     {
-        if (movementRange.validMovement.Contains(tile))
+        if (movementRange.validMovementTiles.Contains(tile))
         {
             world.gameState.currentActor.move(tile);
         }
+    }
+
+    public void updateMousePosition(Tile tile)
+    {
+        //nothing
+    }
+
+    public void end()
+    {
+        movementRange.clear();
+    }
+
+    public void start()
+    {
+        movementRange.newMovementRange(world.gameState.currentActor);
     }
 }

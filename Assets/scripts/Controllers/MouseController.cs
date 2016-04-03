@@ -3,7 +3,8 @@ using System.Collections;
 using System;
 using UnityEngine.EventSystems;
 
-public class MouseController : MonoBehaviour {
+public class MouseController : MonoBehaviour
+{
     // The world-position of the mouse last frame.
     Vector3 lastFramePosition;
     Vector3 currFramePosition;
@@ -14,23 +15,44 @@ public class MouseController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start()
+    {
+
+    }
+
+    public void shootButton()
+    {
+        Debug.Log("'shoot' button.");
+        world.gameState.setModeToShooting();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         currFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currFramePosition.z = 0;
 
-        interfaceInput();
+        int x = Mathf.FloorToInt(currFramePosition.x + 0.5f);
+        int y = Mathf.FloorToInt(currFramePosition.y + 0.5f);
+        Tile tile = world.getTileAt(x, y);
+
+        interfaceInput(tile);
+        updatePosition(tile);
         updateCameraMovement();
 
         lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lastFramePosition.z = 0;
     }
 
-    private void interfaceInput()
+    private void updatePosition(Tile tile)
+    {
+        if (tile != null)
+        {
+            world.gameState.updateMousePosition(tile);
+        }
+    }
+
+    private void interfaceInput(Tile tile)
     {
         // If we're over a UI element, then bail out from this.
         if (EventSystem.current.IsPointerOverGameObject())
@@ -40,22 +62,23 @@ public class MouseController : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            int x = Mathf.FloorToInt(currFramePosition.x + 0.5f);
-            int y = Mathf.FloorToInt(currFramePosition.y + 0.5f);
-
-            Tile tile = world.getTileAt(x, y);
 
             if (tile != null)
             {
                 world.gameState.click(tile);
             }
         }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            world.gameState.setModeToMovement();
+        }
     }
 
     void updateCameraMovement()
     {
         // Handle screen panning
-        if (Input.GetMouseButton(1) || Input.GetMouseButton(2))
+        if (Input.GetMouseButton(2))
         {   // Right or Middle Mouse Button
 
             Vector3 diff = lastFramePosition - currFramePosition;
