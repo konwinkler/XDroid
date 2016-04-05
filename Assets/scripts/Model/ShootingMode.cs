@@ -9,6 +9,7 @@ public class ShootingMode : GameMode
     private World world;
     public Tile currentPosition { get; internal set; }
     private Action<ShootingMode> notifyNewPosition;
+    public Boolean inRange { get; internal set; }
 
     public ShootingMode(World world)
     {
@@ -25,6 +26,8 @@ public class ShootingMode : GameMode
         if (notifyStart != null)
         {
             notifyStart();
+            inRange = false;
+            currentPosition = null;
         }
     }
 
@@ -33,12 +36,54 @@ public class ShootingMode : GameMode
         if (currentPosition == null || currentPosition != tile)
         {
             currentPosition = tile;
+            inRange = calculateRange(world.gameState.currentActor, currentPosition);
             if (notifyNewPosition != null)
             {
                 notifyNewPosition(this);
             }
         }
 
+    }
+
+    private bool calculateRange(Actor actor, Tile target)
+    {
+        Tile origin = actor.currentTile;
+        foreach (Wall wall in world.walls)
+        {
+            if (intersect(origin.x, origin.y, target.x, target.y, wall.getStartPoint().x, wall.getStartPoint().y, wall.getEndPoint().x, wall.getEndPoint().y))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Boolean intersect(float p0_x, float p0_y, float p1_x, float p1_y,
+        float p2_x, float p2_y, float p3_x, float p3_y)
+    {
+        Vector3 start1 = new Vector3(p0_x, p0_y, -9);
+        Vector3 end1 = new Vector3(p1_x, p1_y, -9);
+        Debug.DrawLine(start1, end1, Color.cyan, 5f);
+
+        Vector3 start2 = new Vector3(p2_x, p2_y, -9);
+        Vector3 end2 = new Vector3(p3_x, p3_y, -9);
+        Debug.DrawLine(start2, end2, Color.red, 5f);
+
+        float s1_x = p1_x - p0_x;
+        float s1_y = p1_y - p0_y;
+        float s2_x = p3_x - p2_x;
+        float s2_y = p3_y - p2_y;
+
+        float s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+        float t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
+
+        if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+        {
+            // Collision detected
+            return true;
+        }
+
+        return false; // No collision
     }
 
     public void newPositionCallback(Action<ShootingMode> callback)
@@ -58,7 +103,7 @@ public class ShootingMode : GameMode
 
     public void end()
     {
-        if(notifyEnd != null)
+        if (notifyEnd != null)
         {
             notifyEnd();
         }

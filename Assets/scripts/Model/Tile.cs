@@ -1,4 +1,6 @@
-﻿public class Tile {
+﻿using UnityEngine;
+
+public class Tile {
 
     public enum TileType
     {
@@ -14,6 +16,11 @@
         type = TileType.Floor;
         this.x = x;
         this.y = y;
+    }
+
+    public Vector2 getPostition()
+    {
+        return new Vector2(x, y);
     }
 
     public override string ToString()

@@ -1,11 +1,44 @@
 ﻿using System;
+using UnityEngine;
 
 public class Wall
 {
     public enum WallType
     {
         Half, Full
-            //if there is no wall the object is null
+        //if there is no wall the object is null
+    }
+
+    public Vector2 getStartPoint()
+    {
+        float startX = x - 0.5f;
+        float startY = y - 0.5f;
+        switch (direction)
+        {
+            case Direction.Up:
+                startY++;
+                break;
+            case Direction.Right:
+                startX++;
+                break;
+        }
+        return new Vector2(startX, startY);
+    }
+
+    public Vector2 getEndPoint()
+    {
+        float endX = x + 0.5f;
+        float endY = y + 0.5f;
+        switch (direction)
+        {
+            case Direction.Down:
+                endY--;
+                break;
+            case Direction.Left:
+                endX--;
+                break;
+        }
+        return new Vector2(endX, endY);
     }
 
     public enum Direction
@@ -32,7 +65,8 @@ public class Wall
         if (direction == this.direction && root.x == x && root.y == y)
         {
             return true;
-        } else {
+        }
+        else {
             switch (direction)
             {
                 //I want to go up and the wall points down

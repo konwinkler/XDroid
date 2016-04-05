@@ -5,7 +5,8 @@ using System;
 public class CrossHairController : MonoBehaviour
 {
     GameObject crossHair;
-    public Sprite crossHairSprite;
+    public Sprite crossHairSpriteGood;
+    public Sprite crossHairSpriteBad;
 
     World world
     {
@@ -29,6 +30,14 @@ public class CrossHairController : MonoBehaviour
     private void moveCrossHair(ShootingMode mode)
     {
         crossHair.transform.position = new Vector3(mode.currentPosition.x, mode.currentPosition.y, 0);
+        if(mode.inRange)
+        {
+            crossHair.GetComponent<SpriteRenderer>().sprite = crossHairSpriteGood;
+        }
+        else
+        {
+            crossHair.GetComponent<SpriteRenderer>().sprite = crossHairSpriteBad;
+        }
     }
 
     private void createGameObject()
@@ -40,7 +49,7 @@ public class CrossHairController : MonoBehaviour
         crossHair.transform.SetParent(this.transform, true);
 
         SpriteRenderer sr = crossHair.AddComponent<SpriteRenderer>();
-        sr.sprite = crossHairSprite;
+        sr.sprite = crossHairSpriteBad;
         sr.sortingLayerName = "CrossHair";
 
         crossHair.SetActive(false);

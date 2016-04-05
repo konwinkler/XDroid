@@ -1,9 +1,11 @@
 fileFormatVersion: 2
 guid: ff82007b74429c34e80d4fedb05d7965
-timeCreated: 1459634408
+timeCreated: 1459820592
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: crosshair_0
+    21300002: crosshair_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +51,47 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: crosshair_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 16}
+        - {x: -9, y: 16}
+        - {x: -16, y: 6}
+        - {x: -16, y: -9}
+        - {x: -7, y: -16}
+        - {x: 7, y: -16}
+        - {x: 16, y: -7}
+        - {x: 16, y: 4}
+        - {x: 14, y: 8}
+    - name: crosshair_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 16}
+        - {x: -9, y: 16}
+        - {x: -16, y: 6}
+        - {x: -16, y: -9}
+        - {x: -7, y: -16}
+        - {x: 7, y: -16}
+        - {x: 16, y: -7}
+        - {x: 16, y: 4}
+        - {x: 14, y: 8}
     outline: []
   spritePackingTag: 
   userData: 
