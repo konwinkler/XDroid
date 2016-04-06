@@ -25,8 +25,8 @@ public class World
     private void createActors()
     {
         actors = new List<Actor>();
-        actors.Add(new Actor("Player1", getTileAt(2, 0), this, 2));
-        actors.Add(new Actor("Player2", getTileAt(2, 9), this, 2));
+        actors.Add(new Actor("Player1", getTileAt(2, 0), this, 2, 0));
+        actors.Add(new Actor("Player2", getTileAt(2, 9), this, 2, 1));
     }
 
     public List<Tile> getNeighbours(Tile root)

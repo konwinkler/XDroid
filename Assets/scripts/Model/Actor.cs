@@ -32,14 +32,16 @@ public class Actor
     private Tile nextTile;
     private World world;
     private Stack<Tile> path;
+    public int team { get; internal set; }
 
-    public Actor(String name, Tile tile, World world, int movementRange)
+    public Actor(String name, Tile tile, World world, int movementRange, int team)
     {
         this.name = name;
         this.currentTile = tile;
         this.nextTile = tile;
         this.world = world;
         this.movementRange = movementRange;
+        this.team = team;
     }
 
     public void move(Tile tile)

@@ -1,9 +1,11 @@
 fileFormatVersion: 2
 guid: 1f84dd9473198c74ca0786722db2cda2
-timeCreated: 1458735863
+timeCreated: 1459900128
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: actor_0
+    21300002: actor_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +51,45 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: actor_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 14}
+        - {x: -14, y: 9}
+        - {x: -14, y: -9}
+        - {x: -5, y: -14}
+        - {x: 8, y: -14}
+        - {x: 14, y: -10}
+        - {x: 14, y: 7}
+        - {x: 10, y: 14}
+    - name: actor_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 14}
+        - {x: -14, y: 9}
+        - {x: -14, y: -9}
+        - {x: -5, y: -14}
+        - {x: 8, y: -14}
+        - {x: 14, y: -10}
+        - {x: 14, y: 7}
+        - {x: 10, y: 14}
     outline: []
   spritePackingTag: 
   userData: 
