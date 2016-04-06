@@ -9,4 +9,5 @@ public interface GameMode
     void updateMousePosition(Tile tile);
     void end();
     void start();
+    void registerFinishedAction(Action callback);
 }

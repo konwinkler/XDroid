@@ -10,25 +10,55 @@ public class GameState
     public MovementMode movementMode { get; internal set; }
     public ShootingMode shootingMode { get; internal set; }
     GameMode currentMode;
-
+    private Action<Actor> gameEnds;
 
     public GameState(World world, Actor firstActor)
     {
         this.world = world;
         currentActor = firstActor;
-        foreach (Actor actor in world.actors)
-        {
-            actor.finishedMovingCallback(findNextActor);
-        }
         movementMode = new MovementMode(world);
+        movementMode.registerFinishedAction(nextTurn);
         shootingMode = new ShootingMode(world);
+        shootingMode.registerFinishedAction(nextTurn);
         currentMode = movementMode;
 
-        //setup movement
-        nextActorCallback(movementMode.movementRange.newMovementRange);
+        //setup movement for first actor
         movementMode.movementRange.newMovementRange(currentActor);
     }
 
+    private void nextTurn()
+    {
+        //find out if more than one actor is alive
+        int countAlive = 0;
+        Actor lastAlive = null;
+        foreach(Actor actor in world.actors)
+        {
+            if(actor.alive)
+            {
+                lastAlive = actor;
+                countAlive++;
+            }
+        }
+        if(countAlive == 1)
+        {
+            //game ends
+            if (gameEnds != null)
+            {
+                gameEnds(lastAlive);
+            }
+            return;
+        }
+
+        //next turn
+        findNextActor(currentActor);
+        currentMode = movementMode;
+        movementMode.movementRange.newMovementRange(currentActor);
+    }
+
+    public void registerGameEnds(Action<Actor> callback)
+    {
+        gameEnds += callback;
+    }
 
     internal void click(Tile tile)
     {

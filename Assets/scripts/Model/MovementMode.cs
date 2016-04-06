@@ -6,6 +6,8 @@ using System.Text;
 public class MovementMode : GameMode
 {
     private World world;
+    private Action finishedAction;
+
     public MovementRange movementRange { get; internal set; }
 
     public MovementMode(World world)
@@ -18,7 +20,18 @@ public class MovementMode : GameMode
     {
         if (movementRange.validMovementTiles.Contains(tile))
         {
+            world.gameState.currentActor.registerFinishedMoving(endMovement);
             world.gameState.currentActor.move(tile);
+        }
+    }
+
+    public void endMovement(Actor actor)
+    {
+        world.gameState.currentActor.unregisterFinishedMoving(endMovement);
+        end();
+        if(finishedAction != null)
+        {
+            finishedAction();
         }
     }
 
@@ -35,5 +48,10 @@ public class MovementMode : GameMode
     public void start()
     {
         movementRange.newMovementRange(world.gameState.currentActor);
+    }
+
+    public void registerFinishedAction(Action callback)
+    {
+        finishedAction += callback;
     }
 }

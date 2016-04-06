@@ -67,6 +67,7 @@
     <Compile Include="Assets\scripts\Controllers\CrossHairController.cs" />
     <Compile Include="Assets\scripts\Controllers\MouseController.cs" />
     <Compile Include="Assets\scripts\Controllers\MovementController.cs" />
+    <Compile Include="Assets\scripts\Controllers\NotificationController.cs" />
     <Compile Include="Assets\scripts\Controllers\TileController.cs" />
     <Compile Include="Assets\scripts\Controllers\WallController.cs" />
     <Compile Include="Assets\scripts\Controllers\WorldController.cs" />

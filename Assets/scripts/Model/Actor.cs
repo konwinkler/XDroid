@@ -29,10 +29,18 @@ public class Actor
 
     private float speed = 5f;
     private float movementPercentage = 0;
+
+    internal void unregisterFinishedMoving(Action<Actor> action)
+    {
+        finishedMoving -= action;
+    }
+
     private Tile nextTile;
     private World world;
     private Stack<Tile> path;
     public int team { get; internal set; }
+    public int maxShootingRange { get; internal set; }
+    public Boolean alive { get; internal set; }
 
     public Actor(String name, Tile tile, World world, int movementRange, int team)
     {
@@ -42,6 +50,13 @@ public class Actor
         this.world = world;
         this.movementRange = movementRange;
         this.team = team;
+        this.maxShootingRange = 3;
+        this.alive = true;
+    }
+
+    public void kill()
+    {
+        this.alive = false;
     }
 
     public void move(Tile tile)
@@ -61,7 +76,7 @@ public class Actor
         moving += callback;
     }
 
-    public void finishedMovingCallback(Action<Actor> callback)
+    public void registerFinishedMoving(Action<Actor> callback)
     {
         finishedMoving += callback;
     }

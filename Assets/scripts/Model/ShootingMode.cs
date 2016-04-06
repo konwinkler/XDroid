@@ -9,6 +9,8 @@ public class ShootingMode : GameMode
     private World world;
     public Tile currentPosition { get; internal set; }
     private Action<ShootingMode> notifyNewPosition;
+    private Action finishedAction;
+
     public Boolean inRange { get; internal set; }
 
     public ShootingMode(World world)
@@ -18,7 +20,18 @@ public class ShootingMode : GameMode
 
     public void click(Tile tile)
     {
-        //TODO:
+        if(inRange)
+        {
+            foreach(Actor actor in world.actors)
+            {
+                if(actor.currentTile == tile)
+                {
+                    actor.kill();
+                    notifyEnd();
+                    finishedAction();
+                }
+            }
+        }
     }
 
     public void start()
@@ -36,7 +49,7 @@ public class ShootingMode : GameMode
         if (currentPosition == null || currentPosition != tile)
         {
             currentPosition = tile;
-            inRange = calculateRange(world.gameState.currentActor, currentPosition);
+            inRange = calculateInRange(world.gameState.currentActor, currentPosition);
             if (notifyNewPosition != null)
             {
                 notifyNewPosition(this);
@@ -45,11 +58,24 @@ public class ShootingMode : GameMode
 
     }
 
-    private bool calculateRange(Actor actor, Tile target)
+    private bool calculateInRange(Actor actor, Tile target)
     {
         Tile origin = actor.currentTile;
+
+        if(Vector2.Distance(origin.getPostition(), target.getPostition()) > actor.maxShootingRange)
+        {
+            //target is too far away
+            return false;
+        } 
+
+        //check if target is blocked by a wall
         foreach (Wall wall in world.walls)
         {
+            if(wall.Type == Wall.WallType.Half)
+            {
+                //half walls do not block shots
+                continue;
+            }
             if (intersect(origin.x, origin.y, target.x, target.y, wall.getStartPoint().x, wall.getStartPoint().y, wall.getEndPoint().x, wall.getEndPoint().y))
             {
                 return false;
@@ -107,5 +133,10 @@ public class ShootingMode : GameMode
         {
             notifyEnd();
         }
+    }
+
+    public void registerFinishedAction(Action callback)
+    {
+        finishedAction += callback;
     }
 }

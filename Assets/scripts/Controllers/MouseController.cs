@@ -26,6 +26,12 @@ public class MouseController : MonoBehaviour
         world.gameState.setModeToShooting();
     }
 
+    public void endButton()
+    {
+        Debug.Log("Quit.");
+        Application.Quit();
+    }
+
     // Update is called once per frame
     void Update()
     {
