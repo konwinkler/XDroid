@@ -10,6 +10,7 @@ public class TileController : MonoBehaviour
 {
 
     public Sprite FloorSprite;
+	Dictionary<Tile, GameObject> gameObjectCache = new Dictionary<Tile, GameObject>();
 
     World world
     {
@@ -37,8 +38,18 @@ public class TileController : MonoBehaviour
                     throw new Exception("Tile type not recognized by tile controller.");
             }
             sr.sortingLayerName = "Tiles";
+
+			gameObjectCache.Add (tile, tileGameObject);
+			tile.registerDestroy (destroy);
         }
     }
+
+	void destroy (Tile tile)
+	{
+		GameObject go = gameObjectCache [tile];
+		Destroy (go);
+		
+	}
 
     // Update is called once per frame
     void Update()

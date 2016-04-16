@@ -6,7 +6,7 @@ public class ActorController : MonoBehaviour
 {
     public Sprite ActorSpriteTeam1;
     public Sprite ActorSpriteTeam2;
-    Dictionary<Actor, GameObject> gameObjectCache;
+	Dictionary<Actor, GameObject> gameObjectCache= new Dictionary<Actor, GameObject>();
 
     World world
     {
@@ -16,7 +16,6 @@ public class ActorController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObjectCache = new Dictionary<Actor, GameObject>();
         foreach (Actor actor in world.actors)
         {
             GameObject actorGameObject = new GameObject();
@@ -39,7 +38,8 @@ public class ActorController : MonoBehaviour
             }
             sr.sortingLayerName = "Actor";
 
-            actor.movingCallback(moveActor);
+            actor.registerMoving(moveActor);
+			actor.registerDestroyActor (removeGameObject);
             gameObjectCache.Add(actor, actorGameObject);
         }
     }
@@ -58,4 +58,11 @@ public class ActorController : MonoBehaviour
     {
 
     }
+
+	void removeGameObject (Actor actor)
+	{
+		GameObject go = gameObjectCache [actor];
+		Destroy (go);
+		gameObjectCache.Remove(actor);
+	}
 }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 
 public class Tile {
+	private Action<Tile> notifyDestroy;
 
     public enum TileType
     {
@@ -27,4 +29,20 @@ public class Tile {
     {
         return "Tile: (" + x + ", " + y + ") " + type;
     }
+
+	public void destroy ()
+	{
+		notifyDestroy (this);
+		notifyDestroy = null;
+	}
+
+	public void registerDestroy(Action<Tile> callback)
+	{
+		notifyDestroy += callback;
+	}
+
+	public void unregisterDestroy(Action<Tile> callback)
+	{
+		notifyDestroy -= callback;
+	}
 }

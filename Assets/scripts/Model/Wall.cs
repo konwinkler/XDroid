@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Wall
 {
+	private Action<Wall> notifyDestroy;
+
     public enum WallType
     {
         Half, Full
@@ -98,4 +100,20 @@ public class Wall
         }
         return false;
     }
+
+	public void destroy ()
+	{
+		notifyDestroy(this);
+		notifyDestroy = null;
+	}
+
+	public void registerDestroy(Action<Wall> callback)
+	{
+		notifyDestroy += callback;
+	}
+
+	public void unregisterDestroy(Action<Wall> callback)
+	{
+		notifyDestroy -= callback;
+	}
 }

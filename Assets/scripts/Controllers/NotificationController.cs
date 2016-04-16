@@ -25,7 +25,7 @@ public class NotificationController : MonoBehaviour
         Debug.Log(announcer);
 
 
-        announcer.text = actor.name + " is the winner!";
+        announcer.text = "You lost!";
     }
 
     // Update is called once per frame

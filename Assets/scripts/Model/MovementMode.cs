@@ -54,4 +54,14 @@ public class MovementMode : GameMode
     {
         finishedAction += callback;
     }
+
+	public void unregisterFinishedAction (Action callback)
+	{
+		finishedAction -= callback;
+	}
+
+	public void destroy ()
+	{
+		movementRange.clear ();
+	}
 }

@@ -7,40 +7,35 @@ public class Actor
 {
     public Tile currentTile { get; internal set; }
     public string name { get; internal set; }
-    public float x
-    {
-        get
-        {
-            return Mathf.Lerp(currentTile.x, nextTile.x, movementPercentage);
-        }
-    }
-    public float y
-    {
-        get
-        {
-            return Mathf.Lerp(currentTile.y, nextTile.y, movementPercentage);
-        }
-    }
-
     public int movementRange { get; internal set; }
+	public int team { get; internal set; }
+	public Boolean alive { get; internal set; }
+
+	private float speed = 5f;
+	private float movementPercentage = 0;
+	private Tile nextTile;
+	private World world;
+	private Stack<Tile> path;
 
     Action<Actor> moving;
-    Action<Actor> finishedMoving;
+	Action<Actor> finishedMoving;
+	Action<Actor> notifyDestroyActor;
 
-    private float speed = 5f;
-    private float movementPercentage = 0;
 
-    internal void unregisterFinishedMoving(Action<Actor> action)
-    {
-        finishedMoving -= action;
-    }
-
-    private Tile nextTile;
-    private World world;
-    private Stack<Tile> path;
-    public int team { get; internal set; }
-    public int maxShootingRange { get; internal set; }
-    public Boolean alive { get; internal set; }
+	public float x
+	{
+		get
+		{
+			return Mathf.Lerp(currentTile.x, nextTile.x, movementPercentage);
+		}
+	}
+	public float y
+	{
+		get
+		{
+			return Mathf.Lerp(currentTile.y, nextTile.y, movementPercentage);
+		}
+	}
 
     public Actor(String name, Tile tile, World world, int movementRange, int team)
     {
@@ -50,7 +45,6 @@ public class Actor
         this.world = world;
         this.movementRange = movementRange;
         this.team = team;
-        this.maxShootingRange = 3;
         this.alive = true;
     }
 
@@ -71,15 +65,25 @@ public class Actor
         }
     }
 
-    public void movingCallback(Action<Actor> callback)
-    {
-        moving += callback;
-    }
+	public void registerMoving(Action<Actor> callback)
+	{
+		moving += callback;
+	}
 
-    public void registerFinishedMoving(Action<Actor> callback)
-    {
-        finishedMoving += callback;
-    }
+	public void unregisterMoving(Action<Actor> callback)
+	{
+		moving -= callback;
+	}
+
+	public void registerFinishedMoving(Action<Actor> callback)
+	{
+		finishedMoving += callback;
+	}
+		
+	public void unregisterFinishedMoving(Action<Actor> callback)
+	{
+		finishedMoving -= callback;
+	}
 
     internal void update(float deltaTime)
     {
@@ -125,4 +129,22 @@ public class Actor
             moving(this);
         }
     }
+
+	public void destroy ()
+	{
+		moving = null;
+		finishedMoving = null;
+		notifyDestroyActor (this);
+		notifyDestroyActor = null;
+	}
+
+	public void registerDestroyActor(Action<Actor> callback)
+	{
+		notifyDestroyActor += callback;
+	}
+
+	public void unregisterDestroyActor(Action<Actor> callback)
+	{
+		notifyDestroyActor -= callback;
+	}
 }

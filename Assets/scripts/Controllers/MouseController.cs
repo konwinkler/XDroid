@@ -20,12 +20,6 @@ public class MouseController : MonoBehaviour
 
     }
 
-    public void shootButton()
-    {
-        Debug.Log("'shoot' button.");
-        world.gameState.setModeToShooting();
-    }
-
     public void endButton()
     {
         Debug.Log("Quit.");

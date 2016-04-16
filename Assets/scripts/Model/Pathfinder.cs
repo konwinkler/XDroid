@@ -51,7 +51,7 @@ public class Pathfinder
             }
         }
         Debug.Log("Could not find valid path.");
-        return path;
+        return null;
     }
 
     internal List<Tile> calculaterange(Tile start, int movementRange)
@@ -66,27 +66,30 @@ public class Pathfinder
             Tile current = toVisit.Dequeue();
             //Debug.Log("looking at tile: " + current);
 
+			//check if we are above range
             var path = new Stack<Tile>();
             reconstruct(history, current, path, start);
             if (path.Count > movementRange)
             {
-                return visited;
+				break;
             }
 
+			//if not we keep going
             visited.Add(current);
 
-
+			//check all the neighbours
             List<Tile> neighbours = world.getNeighbours(current);
             foreach (var neighbour in neighbours)
             {
                 if (!visited.Contains(neighbour) && !toVisit.Contains(neighbour))
                 {
-                    //Debug.Log("Add to history " + neighbour + "->" + current);
+//                    Debug.Log("Add to history " + neighbour + "->" + current);
                     history.Add(neighbour, current);
                     toVisit.Enqueue(neighbour);
                 }
             }
         }
+		visited.Remove (start);
         return visited;
     }
 

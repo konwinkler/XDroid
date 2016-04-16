@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WallController : MonoBehaviour {
 
     public Sprite fullSprite;
     public Sprite halfSprite;
+	Dictionary<Wall, GameObject> gameObjectCache = new Dictionary<Wall, GameObject>();
 
     World world
     {
@@ -54,8 +56,18 @@ public class WallController : MonoBehaviour {
                     break;
             }
             sr.sortingLayerName = "Walls";
+
+			gameObjectCache.Add (wall, wallGameObject);
+			wall.registerDestroy (destroy);
         }
     }
+
+	void destroy (Wall wall)
+	{
+		GameObject go = gameObjectCache [wall];
+		Destroy (go);
+		gameObjectCache.Remove (wall);
+	}
 
     // Update is called once per frame
     void Update () {

@@ -8,9 +8,9 @@ public class GameState
     Action<Actor> nextActor;
     public Actor currentActor { get; internal set; }
     public MovementMode movementMode { get; internal set; }
-    public ShootingMode shootingMode { get; internal set; }
-    GameMode currentMode;
+	public GameMode currentMode { get; internal set; }
     private Action<Actor> gameEnds;
+	private AI ai;
 
     public GameState(World world, Actor firstActor)
     {
@@ -18,41 +18,41 @@ public class GameState
         currentActor = firstActor;
         movementMode = new MovementMode(world);
         movementMode.registerFinishedAction(nextTurn);
-        shootingMode = new ShootingMode(world);
-        shootingMode.registerFinishedAction(nextTurn);
         currentMode = movementMode;
+		ai = new AI (world);
 
         //setup movement for first actor
         movementMode.movementRange.newMovementRange(currentActor);
     }
 
-    private void nextTurn()
+    public void nextTurn()
     {
-        //find out if more than one actor is alive
-        int countAlive = 0;
-        Actor lastAlive = null;
-        foreach(Actor actor in world.actors)
-        {
-            if(actor.alive)
-            {
-                lastAlive = actor;
-                countAlive++;
-            }
-        }
-        if(countAlive == 1)
-        {
-            //game ends
-            if (gameEnds != null)
-            {
-                gameEnds(lastAlive);
-            }
-            return;
-        }
+		if (currentActor.team == 1 ) {
+			foreach (Actor other in world.actors) {
+				if (other.team == 0 && currentActor.currentTile == other.currentTile) {
+					gameEnds (currentActor);
+				}
+			}
+		}
 
+
+		if (currentActor.team == 0 && currentActor.currentTile == world.goal) {
+			Debug.Log("new world");
+			world.destroy ();
+			world = new World (true);
+		}
+
+//
         //next turn
         findNextActor(currentActor);
         currentMode = movementMode;
         movementMode.movementRange.newMovementRange(currentActor);
+
+
+		if (currentActor.team == 1) {
+			//AI has to move it
+			ai.act(currentActor, this);
+		}
     }
 
     public void registerGameEnds(Action<Actor> callback)
@@ -96,18 +96,16 @@ public class GameState
         nextActor += callback;
     }
 
-    public void setModeToShooting()
-    {
-        currentMode.end();
-        currentMode = shootingMode;
-        currentMode.start();
-
-    }
-
     public void setModeToMovement()
     {
         currentMode.end();
         currentMode = movementMode;
         currentMode.start();
     }
+
+	public void destroy ()
+	{
+		movementMode.unregisterFinishedAction(nextTurn);	
+		movementMode.destroy ();
+	}
 }
